@@ -73,10 +73,6 @@ void Game::render(void)
 
 void Game::update(double seconds_elapsed)
 {
-	//Add here your update method
-	//...
-	//camerapos2.x = pos.x - 64;
-	//camerapos2.y = pos.y - 64;
 	currentstage->update();
 
 	//Read the keyboard state, to see all the keycodes: https://wiki.libsdl.org/SDL_Keycode
