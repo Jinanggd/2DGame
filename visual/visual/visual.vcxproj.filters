@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\src\framework.cpp" />
+    <ClCompile Include="..\..\src\game.cpp" />
+    <ClCompile Include="..\..\src\image.cpp" />
+    <ClCompile Include="..\..\src\input.cpp" />
+    <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\synth.cpp" />
+    <ClCompile Include="..\..\src\utils.cpp" />
+    <ClCompile Include="Stage.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="StartStage.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="InstructStage.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayStage.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Users</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Users</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Users</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\framework.h" />
+    <ClInclude Include="..\..\src\game.h" />
+    <ClInclude Include="..\..\src\image.h" />
+    <ClInclude Include="..\..\src\includes.h" />
+    <ClInclude Include="..\..\src\input.h" />
+    <ClInclude Include="..\..\src\synth.h" />
+    <ClInclude Include="..\..\src\utils.h" />
+    <ClInclude Include="Stage.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="StartStage.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="InstructStage.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayStage.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Users</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Users</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Users</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{983a1ccf-06c2-4c87-9f22-073037677552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Users">
+      <UniqueIdentifier>{7bd573fb-7239-4f84-8f7c-ba8555a42cb6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
