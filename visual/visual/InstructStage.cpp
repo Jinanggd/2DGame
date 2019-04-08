@@ -23,7 +23,7 @@ void InstructStage::render() const {
 	curranim2++;
 }
 
-void InstructStage::update() const {
+void InstructStage::update(double elapsed_time, double time) const {
 
 }
 
@@ -55,5 +55,9 @@ void InstructStage::updateCameraPoistion() const
 }
 
 void InstructStage::medMode() const
+{
+}
+
+void InstructStage::pickItem() const
 {
 }

@@ -73,7 +73,7 @@ void Game::render(void)
 
 void Game::update(double seconds_elapsed)
 {
-	currentstage->update();
+	currentstage->update(elapsed_time,time);
 
 	//Read the keyboard state, to see all the keycodes: https://wiki.libsdl.org/SDL_Keycode
 	if (Input::isKeyPressed(SDL_SCANCODE_UP)) //if key up
@@ -106,6 +106,9 @@ void Game::update(double seconds_elapsed)
 	{
 		currentstage->medMode();
 	}
+	if (Input::wasKeyPressed(SDL_SCANCODE_X)) {
+		currentstage->pickItem();
+	}
 
 	//to read the gamepad state
 	if (Input::gamepads[0].isButtonPressed(A_BUTTON)) //if the A button is pressed
@@ -127,6 +130,9 @@ void Game::onKeyDown( SDL_KeyboardEvent event )
 		case SDLK_n: SwapStages(); break; // Change the stages
 		case SDLK_h:
 			std::cout << currentstage->getPlayerPosition() << std::endl;
+			break;
+		case SDLK_r:
+			currentstage = new StartStage();
 			break;
 
 	}

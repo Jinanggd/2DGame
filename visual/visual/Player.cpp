@@ -16,9 +16,9 @@ void Player::render(Image * framebuffer,Vector2 campos)
 		Area(sporientationx*14, sporientationy*18, 14, 18));
 }
 
-void Player::update()
+void Player::update(double elapsed_time)
 {
-	f_ox += 0.25;
+	f_ox += elapsed_time*3;
 	sporientationx = (int(f_ox) % 4);
 	if(medidating) staminabar -= 0.10f;
 }
@@ -36,21 +36,8 @@ void Player::updatePosition(Vector2 dir, double elapsed_time,Matrix<int> map,int
 		sporientationy = facing;
 		Vector2 newpos;
 		newpos = position + dir * (velocity*elapsed_time);
-		switch (map.get(int(newpos.x), int(newpos.y)))
-		{
-			case 0: // Black zone means we can walk in there
-				if (isInsideSprite(newpos, map, 0))
-					position = newpos;
-				break;
-			case 1: // White zone means we cannot walk in there ( we won't update the position ) 
-				break;
-			case 2: // Vegetables - Substract player stamina
-				break;
-			case 3: // Meat - Add player stamina
-				break;
-			case 4: // Enemy - Substract player life
-				break;
-		}
+		if (!isInsideSprite(newpos, map, 1))
+			position = newpos;
 	}
 		
 
@@ -59,9 +46,58 @@ void Player::updatePosition(Vector2 dir, double elapsed_time,Matrix<int> map,int
 //PENDING
 bool Player::isInsideSprite(Vector2 v, Matrix<int> map, int value)
 {
-	if (map.get(int(v.x + 14), int(v.y - 18)) == value)
-		return true;
+	for (int i = int(v.x); i < v.x + 14; i++) {
+		if (i<0 || i>map.width) continue;
+		for (int j = int(v.y)-20 ; j < v.y; j++) {
+			if (j<0 || j>map.height) continue;
+			if (map.get(i, j) == value)
+				return true;
+		}
+	}
 	return false;
+}
+
+void Player::pickFood(Matrix<int> map, std::vector<Sprite> *element1)
+{
+	int deleteindex = -1;
+	Vector2 foodPos = locateFoodPosition(map);
+
+	std::vector<Sprite> *elements = element1;
+	
+
+	for (int i = 0; i < elements->size(); i++) {
+		if (elements->at(i).getPos() == foodPos) {
+			if (elements->at(i).getType()==0) {
+				staminabar += 10;
+				if (staminabar >= 100.0f) staminabar = 100.0f;
+				deleteindex = i;
+				break;
+			}
+			else if (elements->at(i).getType() == 1) {
+				staminabar -= 10;
+				if (staminabar <= 0.0f) staminabar = 0.0;
+				deleteindex = i;
+				break;
+			}
+		}
+	}
+	if(deleteindex >-1)
+		elements->erase(elements->begin() + deleteindex);
+}
+
+Vector2 Player::locateFoodPosition(Matrix<int> map)
+{
+	int fx, fy;
+	for (int i = position.x - 5; i < position.x + 19; i++) {
+		if (i<0 || i>map.width) continue;
+		for (int j = position.y -5 ; j < position.y + 21; j++) {
+			if (j<0 || j>map.height) continue;
+			if (map.get(i, j) == 2 || map.get(i, j) == 3) {
+				return Vector2(i, j);
+			}
+		}
+	}
+	return Vector2(-1,-1);
 }
 
 std::string Player::getPostion() {

@@ -7,21 +7,25 @@
 class Enemy
 {
 public:
-	Enemy();
+	Enemy(Vector2 pos);
 	//~Enemy();
-	void render();
+	void render(Image* framebuffer, Vector2 campos);
 	void update(double elapsed_time, double time);
 	void inVisionArea();
 
 	void towardsPlayer();
 	void setRandomDirection();
+	void directionToSpriteAnim();
 
 	Sprite* sprite;
 	Vector2 directions[4] = { Vector2(1,0), Vector2(-1,0), Vector2(0,1), Vector2(0,-1) };
 	Vector2 position;
 	Vector2 direction;
+	int sporientationy = 0;
+	int sporientationx = 0;
+	float f_ox = 0.0f;
 	float vision = 60.0f;
-	int velocity = 40;
+	int velocity = 20;
 
 
 };

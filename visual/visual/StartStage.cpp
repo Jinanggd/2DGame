@@ -26,7 +26,7 @@ void StartStage::render() const {
 	curranim1++;
 }
 
-void StartStage::update() const{
+void StartStage::update(double elapsed_time, double time) const{
 
 }
 
@@ -57,5 +57,9 @@ void StartStage::updateCameraPoistion() const {
 }
 
 void StartStage::medMode() const
+{
+}
+
+void StartStage::pickItem() const
 {
 }

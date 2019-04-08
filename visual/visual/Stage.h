@@ -16,7 +16,7 @@ public:
 	//Member Functions 
 	//Basics functions for every stage
 	virtual void render() const = 0;
-	virtual void update() const = 0;
+	virtual void update(double elapsed_time, double time) const = 0;
 	virtual Image getFrameBuffer() const = 0;
 	virtual int getType() const = 0;
 	virtual void renderHeader()const = 0;
@@ -27,6 +27,7 @@ public:
 	virtual void updateCameraPoistion() const = 0;
 	virtual std::string getPlayerPosition() const = 0;
 	virtual void medMode()const = 0;
+	virtual void pickItem() const = 0;
 
 	
 };

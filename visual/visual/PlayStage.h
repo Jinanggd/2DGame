@@ -3,6 +3,7 @@
 
 #include "Stage.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "../../src/game.h"
 
 class PlayStage : public Stage
@@ -15,7 +16,7 @@ public:
 
 
 	virtual void render() const;
-	virtual void update() const;
+	virtual void update(double elapsed_time, double time) const;
 	virtual Image getFrameBuffer() const;
 	virtual int getType() const;
 	virtual void renderHeader()const;
@@ -28,6 +29,13 @@ public:
 
 	void applyBoundaries() const;
 	void fillWorldMatrix() const;
+	void fillElements() const;
+	void renderElements() const;
+	void updateElements() const;
+	void checkGameOver() const;
+	void SpawnEnemies() const;
+	virtual void pickItem() const;
+
 
 	Player* p;
 

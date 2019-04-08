@@ -13,10 +13,12 @@ public:
 	void render(Image* framebuffer, Vector2 campos);
 	void updatePosition(Vector2 dir, double elapsed_time, Matrix<int> map,int facing);
 	void substractLife();
-	void update();
+	void update(double elapsed_time);
 	void changeStage();
 
 	bool isInsideSprite(Vector2 v, Matrix<int>map, int value);
+	void pickFood(Matrix<int>map,std::vector<Sprite> *elements1);
+	Vector2 locateFoodPosition(Matrix<int>map);
 	std::string getPostion();
 	std::string getStamina();
 	std::string getLifes();
