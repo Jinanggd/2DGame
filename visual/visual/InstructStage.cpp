@@ -35,6 +35,8 @@ int InstructStage::getType() const {
 	return 1;
 }
 
+//Non-used
+
 void InstructStage::renderHeader() const
 {
 }
@@ -44,8 +46,6 @@ std::string InstructStage::getPlayerPosition() const
 	return std::string();
 }
 
-
-//Non-used
 void InstructStage::updatePlayerPosition(double time_elapsed, Vector2 dir, int facing) const
 {
 }

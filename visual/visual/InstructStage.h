@@ -8,7 +8,6 @@ class InstructStage : public Stage
 {
 public:
 	InstructStage();
-	//~InstructStage();
 
 	virtual void render() const;
 	virtual void update(double elapsed_time, double time) const;

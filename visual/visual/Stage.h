@@ -2,19 +2,15 @@
 #define STAGE_H
 
 #include "../../src/image.h";
-//#include "../../src/input.h";
-//#include "../../src/includes.h";
-//#include "../../src/game.h";
 
 //Stage abstract class
 class Stage
 {
 public:
 	Stage();
-	//~Stage();
 
 	//Member Functions 
-	//Basics functions for every stage
+	//Basics functions for every stage ( Renders, update and stage type ) 
 	virtual void render() const = 0;
 	virtual void update(double elapsed_time, double time) const = 0;
 	virtual Image getFrameBuffer() const = 0;

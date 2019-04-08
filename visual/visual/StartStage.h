@@ -8,7 +8,6 @@ class StartStage : public Stage
 {
 public:
 	StartStage();
-	//~StartStage();
 	
 	virtual void render() const;
 	virtual void update(double elapsed_time, double time) const;

@@ -34,8 +34,8 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	sprite.loadTGA("data/Monk.tga"); //example to load an sprite
 	test.loadTGA("data/test.tga");
 
-	//enableAudio(); //enable this line if you plan to add audio to your application
-	//synth.playSample("data/coin.wav",1,true);
+	enableAudio(); //enable this line if you plan to add audio to your application
+	synth.playSample("data/ThemeAll.wav",1,true);
 	//synth.osc1.amplitude = 0.5;
 }
 
@@ -174,6 +174,11 @@ void Game::onResize(int width, int height)
 	glViewport( 0,0, width, height );
 	window_width = width;
 	window_height = height;
+}
+
+void Game::endGame(const char * filename)
+{
+	currentstage = new EndStage(filename);
 }
 
 void Game::SwapStages() {

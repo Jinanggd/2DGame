@@ -1,36 +1,62 @@
 #include "Enemy.h"
 
+Image buble;
 
 Enemy::Enemy(Vector2 pos)
 {
 	position = pos;
 	sprite = new Sprite("data/Master.tga");
-	direction = directions[0];
+	buble.loadTGA("data/Bubble16x16.tga");
+	direction = directions[rand() % 4];
+}
 
+//Does not work properly - PENDING TO ASK
+Enemy::Enemy(Vector2 pos, Image sp, Image bbsp)
+{
+	position = pos;
+	sprite->currentsprite.Get("data/Bubble16x16.tga");
+	buble.Get("data/Bubble16x16.tga");
+	direction = directions[rand()%4];
 }
 
 void Enemy::render(Image * framebuffer, Vector2 campos)
 {
 	framebuffer->drawImage(sprite->currentsprite, ceil(position.x - campos.x), ceil(position.y - campos.y),
 		Area(sporientationx * 14, sporientationy * 18, 14, 18));
+	if (locked) {
+		framebuffer->drawImage(buble,ceil(position.x-campos.x),ceil(position.y-campos.y-15));
+	}
 }
 
 //Update the enemy position
-void Enemy::update(double elapsed_time, double time)
+void Enemy::update(double elapsed_time, double time, Matrix<int> map)
 {
-	if (int(time) % 5 == 0)
-		towardsPlayer();
-	else
-		setRandomDirection();
+	if (!locked) {
+		//Every five seconds the enemy will change the direction towards the player
+		if (int(time) % 5 == 0)
+			towardsPlayer();
 
-	directionToSpriteAnim();
+		//For animation purposes ( update the sporientationy )
+		directionToSpriteAnim();
+		//Animation
+		f_ox += elapsed_time * 3;
+		sporientationx = (int(f_ox) % 4);
 
-	f_ox += elapsed_time*3;
-	sporientationx = (int(f_ox) % 4);
-	 
-
-	position.x += direction.x*elapsed_time*velocity;
-	position.y += direction.y*elapsed_time*velocity;
+		//New position for the enemy
+		Vector2 Newpos = position + direction * elapsed_time*velocity;
+		if (!isInsideSprite(Newpos, map, 1))
+			position = Newpos;
+		if (inVisionArea()) {
+			//std::cout << "Spotted";
+			//Shut down the game
+		}
+			
+	}
+	else if(int(time)%7 ==0){
+		locked = false;
+		setInverseDirection();
+	}
+	
 }
 
 void Enemy::towardsPlayer() {
@@ -54,11 +80,9 @@ void Enemy::towardsPlayer() {
 
 }
 
-//Returns a random direction
-void Enemy::setRandomDirection()
+void Enemy::setInverseDirection()
 {
-	int random_index = rand() & 3;
-	direction = directions[random_index];
+	direction *= -1;
 }
 
 void Enemy::directionToSpriteAnim()
@@ -68,12 +92,25 @@ void Enemy::directionToSpriteAnim()
 	else if (direction == directions[1])
 		sporientationy = 2;
 	else if (direction == directions[2])
-		sporientationy = 3;
-	else 
 		sporientationy = 0;
+	else 
+		sporientationy = 3;
 }
 
-void Enemy::inVisionArea()
+bool Enemy::isInsideSprite(Vector2 v, Matrix<int> map, int value)
+{
+	for(int i = int(v.x); i < v.x + 14; i++) {
+		if (i<0 || i>map.width) continue;
+		for (int j = int(v.y) - 20; j < v.y; j++) {
+			if (j<0 || j>map.height) continue;
+			if (map.get(i, j) == value)
+				return true;
+		}
+	}
+	return false;
+}
+
+bool Enemy::inVisionArea()
 {
 	Vector2 p_position = Player::instance->position;
 	Vector2 vectorEP = p_position - position;
@@ -81,9 +118,15 @@ void Enemy::inVisionArea()
 	float length = position.distance(p_position);
 	float dot = vectorEP.dot(direction);
 
-	if (length < vision && dot > 0) {
-		Player::instance->substractLife();
+	if (length < vision && dot > 0 && !Player::instance->medidating) {
+		Player::instance->addStamina(-10.0f);
+		locked = true;
+
+		return true;
+		//Player::instance->substractLife();
 	}
+
+	return false;
 }
 
 

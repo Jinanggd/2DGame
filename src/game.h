@@ -13,6 +13,7 @@
 #include "../visual/visual/StartStage.h"
 #include "../visual/visual/InstructStage.h"
 #include "../visual/visual/PlayStage.h"
+#include "../visual/visual/EndStage.h"
 
 class Game
 {
@@ -53,6 +54,7 @@ public:
 	void onGamepadButtonDown(SDL_JoyButtonEvent event);
 	void onGamepadButtonUp(SDL_JoyButtonEvent event);
 	void onResize(int width, int height);
+	void endGame(const char* filename);
 
 	void SwapStages();
 

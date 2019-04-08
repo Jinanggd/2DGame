@@ -1,24 +1,30 @@
 #include "PlayStage.h"
 #include "vector"
+
+//Global variables
 int MEAT = 0;
 int VEGGIE= 1;
 int meatnum = 0;
 int veggienum = 0;
-//Global variables
+Player* p;
+
 Image frameBuffer_Play;
 Image minifont;
 Vector2 camerapos(0, 0);
 Vector2 framesize(0, 0);
 
-//Map
+//Map realated variables
 Image bg;
 Matrix<int> mapmask;
+
+//Items / elements / Foods
 Sprite spm;
 Sprite spv;
 std::vector<Sprite> *elements;
+
+//Vector of enemies
 std::vector<Enemy> *enemies;
 
-//Depracated - Pending to be eliminated
 PlayStage::PlayStage() : Stage()
 {
 	frameBuffer_Play.fill(Color(0, 255, 0));
@@ -40,20 +46,23 @@ PlayStage::PlayStage(int w, int h) :Stage() {
 	//Start buffer
 	frameBuffer_Play.resize(w, h);
 
-	//Create the player
+	//Init variables ( Player and vectors ) 
 	p = new Player();
 	elements = new std::vector<Sprite>;
 	enemies = new std::vector<Enemy>;
+
 	//Set the position of the camera
 	camerapos.x = p->instance->position.x - w / 2;
 	camerapos.y = p->instance->position.y - h / 2;
 	framesize.x = w;
 	framesize.y = h;
 	
-	fillWorldMatrix(); // Init the matrix world 
+	//Init / Fill vectors and Matrix
+	fillWorldMatrix();
 	fillElements();
 	SpawnEnemies();
 
+	//First frame
 	frameBuffer_Play.fill(Color::BLACK);
 	frameBuffer_Play.drawImage(bg, 0, 20);
 	renderHeader();
@@ -63,20 +72,21 @@ PlayStage::PlayStage(int w, int h) :Stage() {
 
 void PlayStage::render() const {
 	frameBuffer_Play.fill(Color::BLACK);
-	frameBuffer_Play.drawImage(bg, 0-camerapos.x, 20-camerapos.y); // 0,0 will be the center of the image
+	frameBuffer_Play.drawImage(bg, 0-camerapos.x, 20-camerapos.y); 
 	renderElements();
-	renderHeader();
 
-
+	p->render(&frameBuffer_Play, camerapos);
 	for (int i = 0; i < enemies->size(); i++)
 		enemies->at(i).render(&frameBuffer_Play,camerapos);
-	p->render(&frameBuffer_Play, camerapos);
+	
+	renderHeader();
 }
 
+//Update Function for Player and enemies
 void PlayStage::update(double elapsed_time, double time) const {
 
 	for (int i = 0; i < enemies->size(); i++)
-		enemies->at(i).update(elapsed_time,time);
+		enemies->at(i).update(elapsed_time,time,mapmask);
 	p->instance->update(elapsed_time);
 	
 }
@@ -89,7 +99,7 @@ int PlayStage::getType() const {
 	return 2;
 }
 
-//Method to render the header of the game ( The grey topbar with life and stamina ) 
+//Method to render the header of the game ( The grey topbar ) 
 void PlayStage::renderHeader() const
 {
 	frameBuffer_Play.drawRectangle(0, 0, framesize.x, 20, Color::GRAY); // Gray background
@@ -102,13 +112,14 @@ void PlayStage::renderHeader() const
 	
 }
 
+//Helping function to print the position of the user
 std::string PlayStage::getPlayerPosition() const
 {
 	return p->instance->getPostion();
 }
 
 
-//update functions for player and camera
+//update functions for player and camera called in game 
 void PlayStage::updatePlayerPosition(double time_elapsed, Vector2 dir, int facing) const
 {
 	p->updatePosition(dir, time_elapsed,mapmask,facing);
@@ -122,13 +133,14 @@ void PlayStage::updateCameraPoistion() const
 	//applyBoundaries();
 }
 
+//Change the user to the meditation mode
 void PlayStage::medMode() const
 {
 	p->instance->changeStage();
 }
 
-
-//Method to apply the boundaries to the camera (?) - UNFINISHED
+//Method to apply the boundaries to the camera
+//UNFINISHED - Decided  to be uneeded
 void PlayStage::applyBoundaries() const
 {
 	if (camerapos.x < -(bg.width/2) + framesize.x/2)
@@ -141,6 +153,7 @@ void PlayStage::applyBoundaries() const
 		camerapos.y = bg.height / 2 - (framesize.y / 2);
 }
 
+//Parse the information from the bg_mask
 void PlayStage::fillWorldMatrix() const
 {
 	Image mask;
@@ -149,19 +162,20 @@ void PlayStage::fillWorldMatrix() const
 
 	for (int i = 0; i < mask.width; i++)
 		for (int j = 0; j < mask.height; j++) {
-			if (mask.getPixel(i, j) == Color::BLACK)
+			if (mask.getPixel(i, j) == Color::BLACK) //Pixels that can be walked
 				mapmask.set(i, j, 0);
-			else if (mask.getPixel(i, j) == Color::WHITE)
+			else if (mask.getPixel(i, j) == Color::WHITE) //Wall
 				mapmask.set(i, j, 1);
-			else if (mask.getPixel(i, j) == Color::GREEN)
+			else if (mask.getPixel(i, j) == Color::GREEN) //Veggies
 				mapmask.set(i, j, 2);
-			else if (mask.getPixel(i, j) == Color::RED)
+			else if (mask.getPixel(i, j) == Color::RED) //Meat
 				mapmask.set(i, j, 3);
-			else if (mask.getPixel(i, j) == Color::BLUE)
+			else if (mask.getPixel(i, j) == Color::BLUE) //Enemy starting position
 				mapmask.set(i, j, 4);
 		}
 }
 
+//Generate the food items and store them into the elements vector
 void PlayStage::fillElements() const
 {
 	int id = 0;
@@ -187,12 +201,12 @@ void PlayStage::fillElements() const
 
 void PlayStage::renderElements() const
 {
-	
 	for (int i = 0; i < elements->size(); i++) {
 		frameBuffer_Play.drawImage(elements->at(i).currentsprite, elements->at(i).pos.x - camerapos.x, elements->at(i).pos.y - camerapos.y);
 	}
 }
 
+//Update the number of elements
 void PlayStage::updateElements() const
 {
 	meatnum = 0;
@@ -203,13 +217,12 @@ void PlayStage::updateElements() const
 	}
 }
 
+//Check if there is no food in the game - if it is 0, the player wins
 void PlayStage::checkGameOver() const
 {
 	if (meatnum == 0) {
 		//Player Win
-	}
-	else if (p->instance->staminabar == 0.0f) {
-		//GameOver
+		Game::instance->endGame("data/Youwin.tga");
 	}
 }
 
