@@ -5,6 +5,7 @@
 #include "../../src/framework.h"
 #include "Player.h"
 #include "../../src/game.h"
+#include "../../src/synth.h"
 
 class Enemy
 {
@@ -31,6 +32,8 @@ public:
 	float vision = 30.0f;
 	int velocity = 10;
 	bool locked = false;
+
+	Synth audio;
 
 
 };

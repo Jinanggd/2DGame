@@ -32,8 +32,8 @@ void Enemy::render(Image * framebuffer, Vector2 campos)
 void Enemy::update(double elapsed_time, double time, Matrix<int> map)
 {
 	if (!locked) {
-		//Every five seconds the enemy will change the direction towards the player
-		if (int(time) % 5 == 0)
+		//Every seven seconds the enemy will change the direction towards the player
+		if (int(time) % 7 == 0)
 			towardsPlayer();
 
 		//For animation purposes ( update the sporientationy )
@@ -52,7 +52,7 @@ void Enemy::update(double elapsed_time, double time, Matrix<int> map)
 		}
 			
 	}
-	else if(int(time)%7 ==0){
+	else if(int(time)%5 ==0){
 		locked = false;
 		setInverseDirection();
 	}
@@ -121,7 +121,8 @@ bool Enemy::inVisionArea()
 	if (length < vision && dot > 0 && !Player::instance->medidating) {
 		Player::instance->addStamina(-10.0f);
 		locked = true;
-
+		//audio.playSample("data/Alert.wav",1,false);
+		Game::instance->synth.playSample("data/Alert.wav", 4, false);
 		return true;
 		//Player::instance->substractLife();
 	}

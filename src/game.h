@@ -34,6 +34,8 @@ public:
 
 	//audio
 	Synth synth;
+	Synth synth2;
+	Synth::SamplePlayback* theme;
 
 	//ctor
 	Game( int window_width, int window_height, SDL_Window* window );
@@ -54,7 +56,7 @@ public:
 	void onGamepadButtonDown(SDL_JoyButtonEvent event);
 	void onGamepadButtonUp(SDL_JoyButtonEvent event);
 	void onResize(int width, int height);
-	void endGame(const char* filename);
+	void endGame(const char* filename, std::string sound);
 
 	void SwapStages();
 

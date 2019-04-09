@@ -2,9 +2,11 @@
 
 Image frame_Buffer_final;
 
-EndStage::EndStage(const char * filename)
+EndStage::EndStage(const char * filename,std::string sound)
 {
 	frame_Buffer_final.loadTGA(filename);
+	Game::instance->theme->stop();
+	Game::instance->synth.playSample(sound, 5.0, false);
 }
 
 void EndStage::render() const

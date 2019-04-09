@@ -2,10 +2,11 @@
 #define ENDSTAGE_H
 
 #include "Stage.h"
+#include "../../src/game.h"
 class EndStage :public Stage
 {
 public:
-	EndStage(const char* filename);
+	EndStage(const char* filename, std::string sound);
 
 	virtual void render() const;
 	virtual void update(double elapsed_time, double time) const;

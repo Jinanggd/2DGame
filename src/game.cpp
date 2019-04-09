@@ -35,7 +35,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	test.loadTGA("data/test.tga");
 
 	enableAudio(); //enable this line if you plan to add audio to your application
-	synth.playSample("data/ThemeAll.wav",1,true);
+	theme = synth.playSample("data/ThemeAll.wav",1,true);
 	//synth.osc1.amplitude = 0.5;
 }
 
@@ -133,6 +133,14 @@ void Game::onKeyDown( SDL_KeyboardEvent event )
 			break;
 		case SDLK_r:
 			currentstage = new StartStage();
+			instance->theme->stop();
+			theme = synth.playSample("data/ThemeAll.wav", 1, true);
+			break;
+		case SDLK_w:
+			endGame("data/Youwin.tga", "data/ThemeWin.wav");
+			break;
+		case SDLK_l:
+			endGame("data/Gameover.tga", "data/LoseTheme.wav");
 			break;
 
 	}
@@ -176,9 +184,9 @@ void Game::onResize(int width, int height)
 	window_height = height;
 }
 
-void Game::endGame(const char * filename)
+void Game::endGame(const char * filename, std::string sound)
 {
-	currentstage = new EndStage(filename);
+	currentstage = new EndStage(filename,sound);
 }
 
 void Game::SwapStages() {

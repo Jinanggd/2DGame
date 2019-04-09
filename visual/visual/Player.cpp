@@ -68,6 +68,8 @@ void Player::pickFood(Matrix<int> map, std::vector<Sprite> *element1)
 		if (elements->at(i).getPos() == foodPos) {
 			if (elements->at(i).getType()==0) {
 				addStamina(10.0f);
+				//audio.playSample("data/Yummy.wav",1,false);
+				Game::instance->synth.playSample("data/Yummy.wav", 5, false);
 				/*staminabar += 10;
 				if (staminabar >= 100.0f) staminabar = 100.0f;*/
 				deleteindex = i;
@@ -75,6 +77,8 @@ void Player::pickFood(Matrix<int> map, std::vector<Sprite> *element1)
 			}
 			else if (elements->at(i).getType() == 1) {
 				addStamina(-10.0f);
+				//audio.playSample("data/ecks.wav", 1, false);
+				Game::instance->synth.playSample("data/ecks.wav", 5, false);
 				/*staminabar -= 10;
 				if (staminabar <= 0.0f) staminabar = 0.0;*/
 				deleteindex = i;
@@ -103,7 +107,7 @@ void Player::CheckGameOver()
 {
 	if (staminabar == 0.0f) {
 		//GameOver
-		Game::instance->endGame("data/Gameover.tga");
+		Game::instance->endGame("data/Gameover.tga","data/LoseTheme.wav");
 	}
 }
 

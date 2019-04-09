@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "../../src/utils.h"
 #include "../../src/game.h"
+#include "../../src/synth.h"
 
 class Player
 {

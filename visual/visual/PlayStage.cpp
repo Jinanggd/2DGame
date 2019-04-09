@@ -25,6 +25,8 @@ std::vector<Sprite> *elements;
 //Vector of enemies
 std::vector<Enemy> *enemies;
 
+
+
 PlayStage::PlayStage() : Stage()
 {
 	frameBuffer_Play.fill(Color(0, 255, 0));
@@ -222,7 +224,7 @@ void PlayStage::checkGameOver() const
 {
 	if (meatnum == 0) {
 		//Player Win
-		Game::instance->endGame("data/Youwin.tga");
+		Game::instance->endGame("data/Youwin.tga","data/ThemeWin.wav");
 	}
 }
 
