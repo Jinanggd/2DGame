@@ -33,7 +33,7 @@ void Enemy::update(double elapsed_time, double time, Matrix<int> map)
 {
 	if (!locked) {
 		//Every seven seconds the enemy will change the direction towards the player
-		if (int(time) % 7 == 0)
+		if (int(time) %9 == 0)
 			towardsPlayer();
 
 		//For animation purposes ( update the sporientationy )
